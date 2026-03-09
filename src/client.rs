@@ -4,6 +4,7 @@ use crate::client::settings::Settings;
 use ratatui::crossterm::event;
 use ratatui::crossterm::event::{Event, KeyCode, KeyEvent};
 use ratatui::{DefaultTerminal, Frame};
+use rust_i18n::i18n;
 use std::io;
 use std::time::Duration;
 
@@ -21,7 +22,7 @@ struct UserContext {
 impl UserContext {
     fn new() -> UserContext {
         UserContext {
-            settings: Settings::default(),
+            settings: Settings::load_from_disk(),
         }
     }
 }
@@ -41,11 +42,16 @@ impl App {
     }
 
     fn run(&mut self, terminal: &mut DefaultTerminal) -> io::Result<()> {
+        self.init();
         while !self.should_close {
             terminal.draw(|frame| self.render(frame))?;
             self.handle_events()?;
         }
         Ok(())
+    }
+
+    fn init(&mut self) {
+        rust_i18n::set_locale(self.user_context.settings.language.as_str());
     }
 
     fn render(&mut self, frame: &mut Frame) {
@@ -57,8 +63,8 @@ impl App {
             return Ok(());
         }
         match event::read()? {
-            Event::Key(event)=>{
-                if let Some(c) = self.screen.on_key_input(&mut self.user_context,event) {
+            Event::Key(event) => {
+                if let Some(c) = self.screen.on_key_input(&mut self.user_context, event) {
                     c(self);
                 }
             }

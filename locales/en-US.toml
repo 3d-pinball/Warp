@@ -1,0 +1,7 @@
+lang.name="English"
+
+ui.main_menu.singleplayer="Singleplayer"
+ui.main_menu.multiplayer="Multiplayer"
+ui.main_menu.deck_edit="Deck Edit"
+ui.main_menu.language="Language: English"
+ui.main_menu.quit="Quit"
