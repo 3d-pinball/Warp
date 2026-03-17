@@ -1,32 +1,31 @@
+use std::io;
+use std::time::Duration;
+use ratatui::{DefaultTerminal, Frame};
+use ratatui::crossterm::event;
+use ratatui::crossterm::event::Event;
 use crate::client::screens::Screen;
 use crate::client::screens::screen_main_menu::ScreenMainMenu;
 use crate::client::settings::Settings;
-use ratatui::crossterm::event;
-use ratatui::crossterm::event::{Event, KeyCode, KeyEvent};
-use ratatui::{DefaultTerminal, Frame};
-use rust_i18n::i18n;
-use std::io;
-use std::time::Duration;
 
-mod screens;
 mod settings;
+mod screens;
 
 pub fn run() -> io::Result<()> {
     ratatui::run(|terminal| App::new().run(terminal))
 }
 
-struct UserContext {
+pub(in crate::client) struct UserContext {
     settings: Settings,
 }
 
 impl UserContext {
-    fn new() -> UserContext {
+    pub fn new() -> UserContext {
         UserContext {
             settings: Settings::load_from_disk(),
         }
     }
 }
-struct App {
+pub(in crate::client) struct App {
     should_close: bool,
     screen: Box<dyn Screen>,
     user_context: UserContext,
@@ -73,7 +72,7 @@ impl App {
         Ok(())
     }
 
-    fn exit(&mut self) {
+    pub fn exit(&mut self) {
         self.should_close = true;
     }
 }

@@ -1,6 +1,6 @@
-use crate::client::{App, UserContext};
 use ratatui::Frame;
 use ratatui::crossterm::event::KeyEvent;
+use crate::client::{App, UserContext};
 
 pub mod screen_main_menu;
 
